@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -19,6 +25,10 @@
   color: white;
 } */
 
+.both-rows {
+  position: absolute;
+  top: 25%;
+}
 .App-link {
   color: #61dafb;
 }
@@ -26,7 +36,12 @@
   margin-top: 50px;
 }
 .weather-card {
-  width: 75%;
+  width: 90%;
+  cursor: pointer;
+}
+.ant-card {
+  display: block;
+  margin: auto !important;
 }
 .weather-image {
   height: 100px;
@@ -37,4 +52,15 @@
 }
 .bottom-of-card {
   font-size: 12px;
+}
+.grow {
+  transition: all 0.2s ease-in-out;
+}
+
+.grow:hover {
+  transform: scale(1.1);
+}
+.vl {
+  border-left: 3px solid green;
+  height: 100%;
 }
