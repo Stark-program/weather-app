@@ -43,15 +43,31 @@
   display: block;
   margin: auto !important;
 }
+.ant-card-body {
+  padding: 0;
+}
+.line-seperation {
+  margin: 0;
+  padding: 0;
+  size: 5px;
+  background-color: black;
+}
 .weather-image {
   height: 100px;
 }
 .small-weather-icon {
   font-size: 30px;
   float: left;
+  color: black;
+  margin-left: 18%;
 }
 .bottom-of-card {
   font-size: 12px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+  margin-right: 10%;
+  text-align: center;
 }
 .grow {
   transition: all 0.2s ease-in-out;
@@ -61,6 +77,20 @@
   transform: scale(1.1);
 }
 .vl {
-  border-left: 3px solid green;
+  border-left: 3px solid black;
   height: 100%;
+}
+.temperature {
+  font-size: xx-large;
+  text-align: center;
+  padding-top: 15%;
+  margin: auto;
+}
+.image-section {
+  height: 100%;
+  width: 100%;
+  background-color: #87cefa;
+}
+.day_to_day_image {
+  font-size: 100px;
 }

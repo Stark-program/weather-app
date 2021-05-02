@@ -1,0 +1,32 @@
+.row-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.ant-layout {
+  display: flex;
+  height: 100%;
+}
+.ant-layout-sider {
+  background: aquamarine;
+}
+.ant-layout-header {
+  background: blanchedalmond;
+}
+.home-btn {
+  height: 57px;
+  display: block;
+  text-align: center;
+  padding-top: 10%;
+}
+.day-btn {
+  display: block;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+.details-row {
+  padding-top: 0.38%;
+  padding-bottom: 0.38%;
+}
