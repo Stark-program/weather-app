@@ -6,6 +6,7 @@
   bottom: 0;
   right: 0;
   overflow: auto;
+  background: linear-gradient(to bottom, #80ccff 0%, #e6ecff 100%);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -18,6 +19,27 @@
   position: absolute;
   top: 25%;
   width: 100%;
+}
+.city-search-div {
+  margin-top: 4%;
+}
+.city-header {
+  font-size: 60px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+}
+.city-search-btn {
+  border-radius: 25px;
+}
+.city-search-input {
+  background-color: #4d79ff;
+  width: 20%;
+  margin-right: 10px;
+  border-radius: 25px;
+  font-weight: bold;
+}
+::placeholder {
+  color: black;
 }
 .App-link {
   color: #61dafb;
