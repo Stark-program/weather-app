@@ -14,20 +14,10 @@
   }
 }
 
-/* .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-} */
-
 .both-rows {
   position: absolute;
   top: 25%;
+  width: 100%;
 }
 .App-link {
   color: #61dafb;
@@ -38,6 +28,10 @@
 .weather-card {
   width: 90%;
   cursor: pointer;
+  border: 1px solid rgba(10, 3, 3, 0.749);
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 10px 5px 5px #87cefa;
 }
 .ant-card {
   display: block;
@@ -49,7 +43,7 @@
 .line-seperation {
   margin: 0;
   padding: 0;
-  size: 5px;
+  height: 3px;
   background-color: black;
 }
 .weather-image {
@@ -58,14 +52,13 @@
 .small-weather-icon {
   font-size: 30px;
   float: left;
-  color: black;
+  color: rgba(10, 3, 3, 0.749);
   margin-left: 18%;
 }
 .bottom-of-card {
-  font-size: 12px;
+  font-size: 15px;
   padding-bottom: 10px;
   padding-top: 10px;
-
   margin-right: 10%;
   text-align: center;
 }
@@ -76,21 +69,47 @@
 .grow:hover {
   transform: scale(1.1);
 }
-.vl {
-  border-left: 3px solid black;
+/* .vl {
+  border-left: 2px solid rgba(12, 3, 3, 0.6);
   height: 100%;
-}
+} */
 .temperature {
   font-size: xx-large;
   text-align: center;
   padding-top: 15%;
   margin: auto;
+  font-family: cursive;
+  font-weight: bold;
+
+  height: 100%;
+  width: 100%;
 }
 .image-section {
   height: 100%;
   width: 100%;
-  background-color: #87cefa;
+
+  background-clip: padding-box;
+}
+.row-background {
+  background-image: url("../images/sunnySkyresized.jpg");
+}
+.background-temp-image {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 0;
 }
 .day_to_day_image {
   font-size: 100px;
+}
+.ant-card-meta-title {
+  font-size: 25px;
+  font-weight: 200;
+  font-family: cursive;
+}
+.ant-card-meta-description {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: cursive;
+  color: rgba(0, 0, 0, 0.6) !important;
 }
