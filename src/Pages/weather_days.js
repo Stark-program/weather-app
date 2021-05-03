@@ -13,20 +13,16 @@ import { Link } from "react-router-dom";
 const { Meta } = Card;
 
 function Days() {
-  const [cityState, setCityState] = useState({ name: "" });
+  const [headerTitle, setHeaderTitle] = useState("");
+  const [cityState, setCityState] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert("Sumbitting Name" + { cityState });
-  };
-  const set = (name) => {
-    return ({ target: { value } }) => {
-      setCityState((oldName) => ({ ...oldName, [name]: value }));
-    };
+    setHeaderTitle(cityState);
   };
 
   return (
     <div className="App">
-      <h1 className="city-header">{cityState.name}</h1>
+      <h1 className="city-header">{headerTitle}</h1>
       <div className="city-search-div">
         <form className="search-form" onSubmit={handleSubmit}>
           <label>
@@ -34,8 +30,8 @@ function Days() {
               type="text"
               className="city-search-input"
               placeholder="Search for your city here...(city, state)"
-              value={cityState.name}
-              onChange={set("name")}
+              value={cityState}
+              onChange={(e) => setCityState(e.target.value)}
             />
           </label>
           <input type="submit" value="Submit" className="city-search-btn" />
