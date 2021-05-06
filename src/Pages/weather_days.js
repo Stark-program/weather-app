@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import dotenv from "dotenv";
 import "./App.css";
 import { Card, Avatar } from "antd";
 import { Row, Col } from "antd";
@@ -9,14 +10,54 @@ import { WiDayRain } from "react-icons/wi";
 import { WiDaySunnyOvercast } from "react-icons/wi";
 import { WiDayThunderstorm } from "react-icons/wi";
 import { Link } from "react-router-dom";
+import Geocode from "react-geocode";
+const axios = require("axios").default;
+
+dotenv.config();
 
 const { Meta } = Card;
 
 function Days() {
   const [headerTitle, setHeaderTitle] = useState("");
   const [cityState, setCityState] = useState("");
-  const handleSubmit = (event) => {
+  const [mondayTempState, setMondayTempState] = useState("");
+  const [tuesdayTempState, setTuesdayTempState] = useState("");
+  const [wednesdayTempState, setWednesdayTempState] = useState("");
+  const [thursdayTempState, setThursdayTempState] = useState("");
+  const [fridayTempState, setFridayTempState] = useState("");
+  const [saturdayTempState, setSaturdayTempState] = useState("");
+  const [sundayTempState, setSundayTempState] = useState("");
+
+  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
+
+  const handleSubmit = async function (event) {
     event.preventDefault();
+    await Geocode.fromAddress(cityState).then(
+      (response) => {
+        // console.log(headerTitle);
+        // const { lat, lng } = response.results[0].geometry.location;
+        const lat = response.results[0].geometry.location.lat;
+        const long = response.results[0].geometry.location.lng;
+        console.log(lat, long);
+
+        const weather = axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=imperial&exclude=hourly,minutely{part}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
+          )
+          .then((answer) => {
+            const currentWeather = answer.data.current.weather[0].main;
+            const currentTemp = answer.data.current.temp;
+            const mondayTemp = answer.data.daily[0].temp.day;
+
+            console.log(mondayTemp);
+            setMondayTempState(mondayTemp);
+          });
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
     setHeaderTitle(cityState);
   };
 
@@ -44,7 +85,10 @@ function Days() {
               <Card className="weather-card grow">
                 <Row className="row-background">
                   <Col span={12}>
-                    <div className="temperature">92{"\u00B0"}</div>
+                    <div className="temperature">
+                      {mondayTempState}
+                      {"\u00B0"}
+                    </div>
                   </Col>
                   <Col span={12} className="vl">
                     <div className="image-section">
@@ -72,7 +116,10 @@ function Days() {
                 <Card className="weather-card grow">
                   <Row className="row-background">
                     <Col span={12}>
-                      <div className="temperature">79{"\u00B0"}</div>
+                      <div className="temperature">
+                        {tuesdayTempState}
+                        {"\u00B0"}
+                      </div>
                     </Col>
                     <Col span={12} className="vl">
                       <div className="image-section">
@@ -103,7 +150,10 @@ function Days() {
                 <Card className="weather-card grow">
                   <Row className="row-background">
                     <Col span={12}>
-                      <div className="temperature">68{"\u00B0"}</div>
+                      <div className="temperature">
+                        {wednesdayTempState}
+                        {"\u00B0"}
+                      </div>
                     </Col>
                     <Col span={12} className="vl">
                       <div className="image-section">
@@ -133,7 +183,10 @@ function Days() {
               <Card className="weather-card grow">
                 <Row className="row-background">
                   <Col span={12}>
-                    <div className="temperature">61{"\u00B0"}</div>
+                    <div className="temperature">
+                      {thursdayTempState}
+                      {"\u00B0"}
+                    </div>
                   </Col>
                   <Col span={12} className="vl">
                     <div className="image-section">
@@ -162,7 +215,10 @@ function Days() {
               <Card className="weather-card grow">
                 <Row className="row-background">
                   <Col span={12}>
-                    <div className="temperature">96{"\u00B0"}</div>
+                    <div className="temperature">
+                      {fridayTempState}
+                      {"\u00B0"}
+                    </div>
                   </Col>
                   <Col span={12} className="vl">
                     <div className="image-section">
@@ -189,7 +245,10 @@ function Days() {
               <Card className="weather-card grow">
                 <Row className="row-background">
                   <Col span={12}>
-                    <div className="temperature">56{"\u00B0"}</div>
+                    <div className="temperature">
+                      {saturdayTempState}
+                      {"\u00B0"}
+                    </div>
                   </Col>
                   <Col span={12} className="vl">
                     <div className="image-section">
@@ -216,7 +275,10 @@ function Days() {
               <Card className="weather-card grow">
                 <Row className="row-background">
                   <Col span={12}>
-                    <div className="temperature">51{"\u00B0"}</div>
+                    <div className="temperature">
+                      {sundayTempState}
+                      {"\u00B0"}
+                    </div>
                   </Col>
                   <Col span={12} className="vl">
                     <div className="image-section">
