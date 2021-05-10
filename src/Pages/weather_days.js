@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DatePicker from "react-date-picker";
 import dotenv from "dotenv";
 import "./App.css";
 import { Card, Avatar } from "antd";
@@ -27,6 +28,7 @@ function Days() {
   const [fridayTempState, setFridayTempState] = useState("");
   const [saturdayTempState, setSaturdayTempState] = useState("");
   const [sundayTempState, setSundayTempState] = useState("");
+  const [date, setDate] = useState(new Date());
 
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
@@ -97,16 +99,32 @@ function Days() {
                   </Col>
                 </Row>
                 <hr className="line-seperation"></hr>
-                <Meta
-                  className="bottom-of-card"
-                  avatar={
-                    <Avatar
-                      src={<WiDaySunny className="small-weather-icon" />}
+                <Row>
+                  <Col span={20}>
+                    <Meta
+                      className="bottom-of-card"
+                      avatar={
+                        <Avatar
+                          src={<WiDaySunny className="small-weather-icon" />}
+                        />
+                      }
+                      title="Monday"
+                      description="Today, it is clear skies"
                     />
-                  }
-                  title="Monday"
-                  description="Today, it is clear skies"
-                />
+                  </Col>
+                  <Col span={4}>
+                    <div className="bottom-of-card-date">
+                      <DatePicker
+                        onChange={setDate}
+                        value={date}
+                        format="MM/dd"
+                        disableCalendar="true"
+                        disabled="true"
+                        clearIcon={null}
+                      />
+                    </div>
+                  </Col>
+                </Row>
               </Card>
             </Link>
           </Col>
