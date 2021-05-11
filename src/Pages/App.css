@@ -135,3 +135,11 @@
   font-family: cursive;
   color: rgba(0, 0, 0, 0.6) !important;
 }
+
+.react-date-picker--disabled {
+  background: none;
+  background-color: none;
+}
+.react-date-picker__wrapper {
+  border: none;
+}

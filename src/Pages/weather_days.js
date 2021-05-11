@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-date-picker";
+import setDay from "date-fns/setDay";
+import format from "date-fns/format";
 import dotenv from "dotenv";
 import "./App.css";
 import { Card, Avatar } from "antd";
@@ -28,7 +29,13 @@ function Days() {
   const [fridayTempState, setFridayTempState] = useState("");
   const [saturdayTempState, setSaturdayTempState] = useState("");
   const [sundayTempState, setSundayTempState] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [mondayDate, setMondayDate] = useState();
+  const [tuesdayDate, setTuesdayDate] = useState();
+  const [wednesdayDate, setWednesdayDate] = useState();
+  const [thursdayDate, setThursdayDate] = useState();
+  const [fridayDate, setFridaystate] = useState();
+  const [saturdayDate, setSaturdayDate] = useState();
+  const [sundayDate, setSundayDate] = useState();
 
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
@@ -59,9 +66,19 @@ function Days() {
         console.error(error);
       }
     );
+    let currentDay = new Date();
+    let d = currentDay.getDay();
+    let test = setDay(currentDay, 0, { weekStartsOn: d });
+    let final = format(test, "M/d");
+    if (d === 1) {
+      setMondayDate(final);
+    }
 
     setHeaderTitle(cityState);
   };
+
+  const getDate = () => {};
+  getDate();
 
   return (
     <div className="App">
@@ -100,7 +117,7 @@ function Days() {
                 </Row>
                 <hr className="line-seperation"></hr>
                 <Row>
-                  <Col span={20}>
+                  <Col span={18}>
                     <Meta
                       className="bottom-of-card"
                       avatar={
@@ -112,17 +129,8 @@ function Days() {
                       description="Today, it is clear skies"
                     />
                   </Col>
-                  <Col span={4}>
-                    <div className="bottom-of-card-date">
-                      <DatePicker
-                        onChange={setDate}
-                        value={date}
-                        format="MM/dd"
-                        disableCalendar="true"
-                        disabled="true"
-                        clearIcon={null}
-                      />
-                    </div>
+                  <Col span={6}>
+                    <div className="bottom-of-card-date">{mondayDate}</div>
                   </Col>
                 </Row>
               </Card>
