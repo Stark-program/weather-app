@@ -25,14 +25,14 @@
 }
 .city-header {
   font-size: 60px;
-  font-family: "Courier New", Courier, monospace;
+  font-family: sans-serif;
   font-weight: bold;
 }
 .city-search-btn {
   border-radius: 25px;
 }
 .city-search-input {
-  background-color: #4d79ff;
+  background-color: white;
   width: 20%;
   margin-right: 10px;
   border-radius: 25px;
@@ -46,6 +46,9 @@
 }
 .second-row {
   margin-top: 50px;
+}
+.ant-avatar {
+  overflow: visible;
 }
 .weather-card {
   width: 90%;
@@ -102,7 +105,7 @@
   text-align: center;
   padding-top: 15%;
   margin: auto;
-  font-family: cursive;
+  font-family: sans-serif;
   font-weight: bold;
 
   height: 100%;
@@ -129,12 +132,12 @@
 .ant-card-meta-title {
   font-size: 25px;
   font-weight: 200;
-  font-family: cursive;
+  font-family: sans-serif;
 }
 .ant-card-meta-description {
   font-size: 20px;
   font-weight: bold;
-  font-family: cursive;
+  font-family: sans-serif;
   color: rgba(0, 0, 0, 0.6) !important;
 }
 
