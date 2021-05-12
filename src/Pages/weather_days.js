@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import setDay from "date-fns/setDay";
+import addDays from "date-fns/addDays";
+import fromUnixTime from "date-fns/fromUnixTime";
 import format from "date-fns/format";
 import dotenv from "dotenv";
 import "./App.css";
@@ -22,20 +24,7 @@ const { Meta } = Card;
 function Days() {
   const [headerTitle, setHeaderTitle] = useState("");
   const [cityState, setCityState] = useState("");
-  const [mondayTempState, setMondayTempState] = useState("");
-  const [tuesdayTempState, setTuesdayTempState] = useState("");
-  const [wednesdayTempState, setWednesdayTempState] = useState("");
-  const [thursdayTempState, setThursdayTempState] = useState("");
-  const [fridayTempState, setFridayTempState] = useState("");
-  const [saturdayTempState, setSaturdayTempState] = useState("");
-  const [sundayTempState, setSundayTempState] = useState("");
-  const [mondayDate, setMondayDate] = useState();
-  const [tuesdayDate, setTuesdayDate] = useState();
-  const [wednesdayDate, setWednesdayDate] = useState();
-  const [thursdayDate, setThursdayDate] = useState();
-  const [fridayDate, setFridaystate] = useState();
-  const [saturdayDate, setSaturdayDate] = useState();
-  const [sundayDate, setSundayDate] = useState();
+  const [dayData, setDayData] = useState([]);
 
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
@@ -54,25 +43,14 @@ function Days() {
             `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=imperial&exclude=hourly,minutely{part}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
           )
           .then((answer) => {
-            const currentWeather = answer.data.current.weather[0].main;
-            const currentTemp = answer.data.current.temp;
-            const mondayTemp = answer.data.daily[0].temp.day;
-
-            console.log(mondayTemp);
-            setMondayTempState(mondayTemp);
+            setDayData(answer.data.daily);
+            console.log(answer.data);
           });
       },
       (error) => {
         console.error(error);
       }
     );
-    let currentDay = new Date();
-    let d = currentDay.getDay();
-    let test = setDay(currentDay, 0, { weekStartsOn: d });
-    let final = format(test, "M/d");
-    if (d === 1) {
-      setMondayDate(final);
-    }
 
     setHeaderTitle(cityState);
   };
@@ -80,6 +58,60 @@ function Days() {
   const getDate = () => {};
   getDate();
 
+  const renderCard = (data) => {
+    console.log(data);
+    return (
+      <Col span={6} key={data.dt}>
+        <Link to="/Pages/expanded_details">
+          <Card className="weather-card grow">
+            <Row className="row-background">
+              <Col span={12}>
+                <div className="temperature">
+                  {data.temp.day}
+                  {"\u00B0"}
+                </div>
+              </Col>
+              <Col span={12} className="vl">
+                <div className="image-section">
+                  {
+                    <img
+                      src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                      className="day_to_day_image"
+                    />
+                  }
+                </div>
+              </Col>
+            </Row>
+            <hr className="line-seperation"></hr>
+            <Row>
+              <Col span={18}>
+                <Meta
+                  className="bottom-of-card"
+                  avatar={
+                    <Avatar
+                      src={
+                        <img
+                          src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                          className="small-weather-icon"
+                        />
+                      }
+                    />
+                  }
+                  title={format(fromUnixTime(data.dt), "EEEE")}
+                  description={data.weather[0].description}
+                />
+              </Col>
+              <Col span={6}>
+                <div className="bottom-of-card-date">
+                  {format(fromUnixTime(data.dt), "M/d")}
+                </div>
+              </Col>
+            </Row>
+          </Card>
+        </Link>
+      </Col>
+    );
+  };
   return (
     <div className="App">
       <h1 className="city-header">{headerTitle}</h1>
@@ -98,233 +130,7 @@ function Days() {
         </form>
       </div>
       <div className="both-rows">
-        <Row>
-          <Col span={6}>
-            <Link to="/Pages/expanded_details">
-              <Card className="weather-card grow">
-                <Row className="row-background">
-                  <Col span={12}>
-                    <div className="temperature">
-                      {mondayTempState}
-                      {"\u00B0"}
-                    </div>
-                  </Col>
-                  <Col span={12} className="vl">
-                    <div className="image-section">
-                      {<WiDaySunny className="day_to_day_image" />}
-                    </div>
-                  </Col>
-                </Row>
-                <hr className="line-seperation"></hr>
-                <Row>
-                  <Col span={18}>
-                    <Meta
-                      className="bottom-of-card"
-                      avatar={
-                        <Avatar
-                          src={<WiDaySunny className="small-weather-icon" />}
-                        />
-                      }
-                      title="Monday"
-                      description="Today, it is clear skies"
-                    />
-                  </Col>
-                  <Col span={6}>
-                    <div className="bottom-of-card-date">{mondayDate}</div>
-                  </Col>
-                </Row>
-              </Card>
-            </Link>
-          </Col>
-          {
-            <Col span={6}>
-              <Link to="/Pages/expanded_details">
-                <Card className="weather-card grow">
-                  <Row className="row-background">
-                    <Col span={12}>
-                      <div className="temperature">
-                        {tuesdayTempState}
-                        {"\u00B0"}
-                      </div>
-                    </Col>
-                    <Col span={12} className="vl">
-                      <div className="image-section">
-                        {<WiDaySunnyOvercast className="day_to_day_image" />}
-                      </div>
-                    </Col>
-                  </Row>
-                  <hr className="line-seperation"></hr>
-                  <Meta
-                    className="bottom-of-card"
-                    avatar={
-                      <Avatar
-                        src={
-                          <WiDaySunnyOvercast className="small-weather-icon" />
-                        }
-                      />
-                    }
-                    title="Tuesday"
-                    description="Today, expect some clouds"
-                  />
-                </Card>
-              </Link>
-            </Col>
-          }
-          {
-            <Col span={6}>
-              <Link to="/Pages/expanded_details">
-                <Card className="weather-card grow">
-                  <Row className="row-background">
-                    <Col span={12}>
-                      <div className="temperature">
-                        {wednesdayTempState}
-                        {"\u00B0"}
-                      </div>
-                    </Col>
-                    <Col span={12} className="vl">
-                      <div className="image-section">
-                        {<WiDayThunderstorm className="day_to_day_image" />}
-                      </div>
-                    </Col>
-                  </Row>
-                  <hr className="line-seperation"></hr>
-                  <Meta
-                    className="bottom-of-card"
-                    avatar={
-                      <Avatar
-                        src={
-                          <WiDayThunderstorm className="small-weather-icon" />
-                        }
-                      />
-                    }
-                    title="Wednesday"
-                    description="Today, expect rain and thunderstorms"
-                  />
-                </Card>
-              </Link>
-            </Col>
-          }
-          <Col span={6}>
-            <Link to="/Pages/expanded_details">
-              <Card className="weather-card grow">
-                <Row className="row-background">
-                  <Col span={12}>
-                    <div className="temperature">
-                      {thursdayTempState}
-                      {"\u00B0"}
-                    </div>
-                  </Col>
-                  <Col span={12} className="vl">
-                    <div className="image-section">
-                      {<WiDayRain className="day_to_day_image" />}
-                    </div>
-                  </Col>
-                </Row>
-                <hr className="line-seperation"></hr>
-                <Meta
-                  className="bottom-of-card"
-                  avatar={
-                    <Avatar
-                      src={<WiDayRain className="small-weather-icon" />}
-                    />
-                  }
-                  title="Thursday"
-                  description="Today, expect rain throughout the day"
-                />
-              </Card>
-            </Link>
-          </Col>
-        </Row>
-        <Row className="second-row">
-          <Col span={6}>
-            <Link to="/Pages/expanded_details">
-              <Card className="weather-card grow">
-                <Row className="row-background">
-                  <Col span={12}>
-                    <div className="temperature">
-                      {fridayTempState}
-                      {"\u00B0"}
-                    </div>
-                  </Col>
-                  <Col span={12} className="vl">
-                    <div className="image-section">
-                      {<WiDaySunny className="day_to_day_image" />}
-                    </div>
-                  </Col>
-                </Row>
-                <hr className="line-seperation"></hr>
-                <Meta
-                  className="bottom-of-card"
-                  avatar={
-                    <Avatar
-                      src={<WiDaySunny className="small-weather-icon" />}
-                    />
-                  }
-                  title="Friday"
-                  description="Today, it is clear skies"
-                />
-              </Card>
-            </Link>
-          </Col>
-          <Col span={6}>
-            <Link to="/Pages/expanded_details">
-              <Card className="weather-card grow">
-                <Row className="row-background">
-                  <Col span={12}>
-                    <div className="temperature">
-                      {saturdayTempState}
-                      {"\u00B0"}
-                    </div>
-                  </Col>
-                  <Col span={12} className="vl">
-                    <div className="image-section">
-                      {<WiDaySleetStorm className="day_to_day_image" />}
-                    </div>
-                  </Col>
-                </Row>
-                <hr className="line-seperation"></hr>
-                <Meta
-                  className="bottom-of-card"
-                  avatar={
-                    <Avatar
-                      src={<WiDaySleetStorm className="small-weather-icon" />}
-                    />
-                  }
-                  title="Saturday"
-                  description="Today, expect rain and thunderstorms"
-                />
-              </Card>
-            </Link>
-          </Col>
-          <Col span={6}>
-            <Link to="/Pages/expanded_details">
-              <Card className="weather-card grow">
-                <Row className="row-background">
-                  <Col span={12}>
-                    <div className="temperature">
-                      {sundayTempState}
-                      {"\u00B0"}
-                    </div>
-                  </Col>
-                  <Col span={12} className="vl">
-                    <div className="image-section">
-                      {<WiDayFog className="day_to_day_image" />}
-                    </div>
-                  </Col>
-                </Row>
-                <hr className="line-seperation"></hr>
-                <Meta
-                  className="bottom-of-card"
-                  avatar={
-                    <Avatar src={<WiDayFog className="small-weather-icon" />} />
-                  }
-                  title="Sunday"
-                  description="Today, it will be a bit foggy"
-                />
-              </Card>
-            </Link>
-          </Col>
-        </Row>
+        <Row>{dayData.map(renderCard)}</Row>
       </div>
     </div>
   );

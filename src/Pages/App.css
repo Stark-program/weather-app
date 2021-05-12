@@ -54,10 +54,11 @@
   border-radius: 25px;
   overflow: hidden;
   box-shadow: 10px 5px 5px #87cefa;
+  margin-top: 10%;
+  margin-left: 5%;
 }
 .ant-card {
   display: block;
-  margin: auto !important;
 }
 .ant-card-body {
   padding: 0;
@@ -76,6 +77,7 @@
   float: left;
   color: rgba(10, 3, 3, 0.749);
   margin-left: 18%;
+  background-color: #87cefa;
 }
 .bottom-of-card {
   font-size: 15px;
