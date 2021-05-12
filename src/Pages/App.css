@@ -140,6 +140,9 @@
   font-family: sans-serif;
   color: rgba(0, 0, 0, 0.6) !important;
 }
+.landingPage {
+  margin-top: 15%;
+}
 
 .react-date-picker--disabled {
   background: none;

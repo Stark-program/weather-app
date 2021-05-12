@@ -21,13 +21,23 @@ dotenv.config();
 const { Meta } = Card;
 
 function Days() {
+  const renderLandingPage = () => {
+    return (
+      <div className="landingPage">
+        {" "}
+        <h1>Enter City and State</h1>
+      </div>
+    );
+  };
   const [headerTitle, setHeaderTitle] = useState("");
   const [cityState, setCityState] = useState("");
   const [dayData, setDayData] = useState([]);
+  const [landingPage, setLandingPage] = useState(renderLandingPage);
 
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
   const handleSubmit = async function (event) {
+    setLandingPage(false);
     event.preventDefault();
     await Geocode.fromAddress(cityState).then(
       (response) => {
@@ -53,9 +63,6 @@ function Days() {
 
     setHeaderTitle(cityState);
   };
-
-  const getDate = () => {};
-  getDate();
 
   const renderCard = (data) => {
     console.log(data);
@@ -113,6 +120,8 @@ function Days() {
   };
   return (
     <div className="App">
+      {landingPage}
+
       <h1 className="city-header">{headerTitle}</h1>
       <div className="city-search-div">
         <form className="search-form" onSubmit={handleSubmit}>
