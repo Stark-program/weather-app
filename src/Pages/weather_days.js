@@ -6,7 +6,9 @@ import dotenv from "dotenv";
 import "./App.css";
 import { Card, Avatar } from "antd";
 import { Row, Col } from "antd";
+import { Layout } from "antd";
 import "antd/dist/antd.css";
+import "./details.css";
 import { WiDayFog, WiDaySunny } from "react-icons/wi";
 import { WiDaySleetStorm } from "react-icons/wi";
 import { WiDayRain } from "react-icons/wi";
@@ -17,27 +19,22 @@ import Geocode from "react-geocode";
 const axios = require("axios").default;
 
 dotenv.config();
-
+const { Header, Footer, Sider, Content } = Layout;
 const { Meta } = Card;
 
 function Days() {
-  const renderLandingPage = () => {
-    return (
-      <div className="landingPage">
-        {" "}
-        <h1>Enter City and State</h1>
-      </div>
-    );
-  };
   const [headerTitle, setHeaderTitle] = useState("");
   const [cityState, setCityState] = useState("");
   const [dayData, setDayData] = useState([]);
-  const [landingPage, setLandingPage] = useState(renderLandingPage);
+  const [isSearching, setIsSearching] = useState(true);
+  const [isLandingPage, setIsLandingPage] = useState(true);
+  const [isHourly, setIsHourly] = useState(false);
+  const [hourlyData, setHourlyData] = useState([]);
 
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-
   const handleSubmit = async function (event) {
-    setLandingPage(false);
+    setIsLandingPage(false);
+
     event.preventDefault();
     await Geocode.fromAddress(cityState).then(
       (response) => {
@@ -63,66 +60,16 @@ function Days() {
 
     setHeaderTitle(cityState);
   };
-
-  const renderCard = (data) => {
-    console.log(data);
+  const renderLandingPage = () => {
     return (
-      <Col span={6} key={data.dt}>
-        <Link to="/Pages/expanded_details">
-          <Card className="weather-card grow">
-            <Row className="row-background">
-              <Col span={12}>
-                <div className="temperature">
-                  {data.temp.day}
-                  {"\u00B0"}
-                </div>
-              </Col>
-              <Col span={12} className="vl">
-                <div className="image-section">
-                  {
-                    <img
-                      src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-                      className="day_to_day_image"
-                    />
-                  }
-                </div>
-              </Col>
-            </Row>
-            <hr className="line-seperation"></hr>
-            <Row>
-              <Col span={18}>
-                <Meta
-                  className="bottom-of-card"
-                  avatar={
-                    <Avatar
-                      src={
-                        <img
-                          src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-                          className="small-weather-icon"
-                        />
-                      }
-                    />
-                  }
-                  title={format(fromUnixTime(data.dt), "EEEE")}
-                  description={data.weather[0].description}
-                />
-              </Col>
-              <Col span={6}>
-                <div className="bottom-of-card-date">
-                  {format(fromUnixTime(data.dt), "M/d")}
-                </div>
-              </Col>
-            </Row>
-          </Card>
-        </Link>
-      </Col>
+      <div className="landingPage">
+        {" "}
+        <h1>Enter City and State</h1>
+      </div>
     );
   };
-  return (
-    <div className="App">
-      {landingPage}
-
-      <h1 className="city-header">{headerTitle}</h1>
+  const renderInput = () => {
+    return (
       <div className="city-search-div">
         <form className="search-form" onSubmit={handleSubmit}>
           <label>
@@ -137,9 +84,115 @@ function Days() {
           <input type="submit" value="Submit" className="city-search-btn" />
         </form>
       </div>
+    );
+  };
+
+  const handleHourlyData = async function () {
+    setIsSearching(false);
+    setDayData([]);
+    setHeaderTitle(false);
+    setIsHourly(true);
+    await Geocode.fromAddress(cityState).then(
+      (response) => {
+        const lat = response.results[0].geometry.location.lat;
+        const long = response.results[0].geometry.location.lng;
+        console.log(lat, long);
+
+        axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
+          )
+          .then((data) => {
+            setHourlyData(data);
+          });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
+  const renderHourlyData = (data) => {
+    console.log(hourlyData);
+    return (
+      <div className="row-container">
+        <Layout>
+          <Header>Location</Header>
+          <Content>
+            <Row>
+              <Col span={24}>
+                <Row className="details-row"></Row>
+              </Col>
+            </Row>
+          </Content>
+        </Layout>
+      </div>
+    );
+  };
+
+  const renderCard = (data) => {
+    console.log(data);
+    return (
+      <Col span={6} key={data.dt}>
+        {/* <Link to="/Pages/expanded_details" onClick={hourlyData}> */}
+        <Card className="weather-card grow" onClick={handleHourlyData}>
+          <Row className="row-background">
+            <Col span={12}>
+              <div className="temperature">
+                {data.temp.day}
+                {"\u00B0"}
+              </div>
+            </Col>
+            <Col span={12} className="vl">
+              <div className="image-section">
+                {
+                  <img
+                    src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                    className="day_to_day_image"
+                  />
+                }
+              </div>
+            </Col>
+          </Row>
+          <hr className="line-seperation"></hr>
+          <Row>
+            <Col span={18}>
+              <Meta
+                className="bottom-of-card"
+                avatar={
+                  <Avatar
+                    src={
+                      <img
+                        src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                        className="small-weather-icon"
+                      />
+                    }
+                  />
+                }
+                title={format(fromUnixTime(data.dt), "EEEE")}
+                description={data.weather[0].description}
+              />
+            </Col>
+            <Col span={6}>
+              <div className="bottom-of-card-date">
+                {format(fromUnixTime(data.dt), "M/d")}
+              </div>
+            </Col>
+          </Row>
+        </Card>
+        {/* </Link> */}
+      </Col>
+    );
+  };
+  return (
+    <div className="App">
+      {isLandingPage ? renderLandingPage() : null}
+      <h1 className="city-header">{headerTitle}</h1>
+      {isSearching ? renderInput() : null}
       <div className="both-rows">
         <Row>{dayData.map(renderCard)}</Row>
       </div>
+      {isHourly ? renderHourlyData() : null}
     </div>
   );
 }
