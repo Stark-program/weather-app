@@ -50,7 +50,6 @@ function Days() {
           )
           .then((answer) => {
             setDayData(answer.data.daily);
-            console.log(answer.data);
           });
       },
       (error) => {
@@ -88,41 +87,63 @@ function Days() {
   };
 
   const handleHourlyData = async function () {
+    console.log(1);
     setIsSearching(false);
     setDayData([]);
     setHeaderTitle(false);
     setIsHourly(true);
+    console.log(2);
     await Geocode.fromAddress(cityState).then(
       (response) => {
+        console.log(3);
         const lat = response.results[0].geometry.location.lat;
         const long = response.results[0].geometry.location.lng;
         console.log(lat, long);
-
+        console.log(4);
         axios
           .get(
             `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
           )
-          .then((data) => {
-            setHourlyData(data);
+          .then((answer) => {
+            let objectArray = Object.entries(answer);
+            console.log(objectArray);
+            let data = [];
+            objectArray.forEach(([key, value]) => {
+              data.push(value);
+            });
+            console.log(data[0].list);
+            setHourlyData(data[0].list);
+            console.log(hourlyData);
           });
       },
       (error) => {
         console.log(error);
       }
     );
+    console.log(6);
+  };
+
+  const renderRows = (data) => {
+    return (
+      <div>
+        <Row className="details-row" key={data.dt}>
+          {data.dt}
+        </Row>
+      </div>
+    );
   };
 
   const renderHourlyData = (data) => {
-    console.log(hourlyData);
+    console.log(7);
+    // console.log(hourlyData);
+    console.log(8);
     return (
       <div className="row-container">
         <Layout>
           <Header>Location</Header>
           <Content>
             <Row>
-              <Col span={24}>
-                <Row className="details-row"></Row>
-              </Col>
+              <Col span={24}>{hourlyData.map(renderRows)}</Col>
             </Row>
           </Content>
         </Layout>
