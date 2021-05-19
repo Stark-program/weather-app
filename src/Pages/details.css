@@ -7,7 +7,6 @@
 }
 .ant-layout {
   display: flex;
-  height: 100%;
 }
 .ant-layout-sider {
   background: aquamarine;

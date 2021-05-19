@@ -102,7 +102,7 @@ function Days() {
         console.log(4);
         axios
           .get(
-            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
           )
           .then((answer) => {
             let objectArray = Object.entries(answer);
@@ -113,6 +113,7 @@ function Days() {
             });
             console.log(data[0].list);
             setHourlyData(data[0].list);
+            setHeaderTitle(headerTitle);
             console.log(hourlyData);
           });
       },
@@ -127,7 +128,9 @@ function Days() {
     return (
       <div>
         <Row className="details-row" key={data.dt}>
-          {data.dt}
+          <Col span={2}>{format(fromUnixTime(data.dt), "M/d EEEEEE HHmm")}</Col>
+          <Col span={8}>{data.main.temp}</Col>
+          <Col span={8}>{data.weather[0].main}</Col>
         </Row>
       </div>
     );
@@ -140,12 +143,43 @@ function Days() {
     return (
       <div className="row-container">
         <Layout>
-          <Header>Location</Header>
-          <Content>
-            <Row>
-              <Col span={24}>{hourlyData.map(renderRows)}</Col>
+          <Sider>
+            <Row className="home-btn">
+              <button>Home</button>
             </Row>
-          </Content>
+            <hr></hr>
+            {/* <Row className="day-btn">
+              <button>Monday</button>
+            </Row>
+            <Row className="day-btn">
+              <button>Tuesday</button>
+            </Row>
+            <Row className="day-btn">
+              <button>Wednesday</button>
+            </Row>
+            <Row className="day-btn">
+              <button>Thursday</button>
+            </Row>
+            <Row className="day-btn">
+              <button>Friday</button>
+            </Row>
+            <Row className="day-btn">
+              <button>Saturday</button>
+            </Row>
+            <Row className="day-btn">
+              <button>Sunday</button>
+            </Row> */}
+          </Sider>
+          <Layout>
+            <Row>
+              <Header>{headerTitle}</Header>
+            </Row>
+            <Content>
+              <Row>
+                <Col span={21}>{hourlyData.map(renderRows)}</Col>
+              </Row>
+            </Content>
+          </Layout>
         </Layout>
       </div>
     );
