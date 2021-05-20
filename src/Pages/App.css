@@ -9,12 +9,6 @@
   background: linear-gradient(to bottom, #80ccff 0%, #e6ecff 100%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .both-rows {
   position: absolute;
   top: 25%;
