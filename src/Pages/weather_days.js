@@ -9,12 +9,6 @@ import { Row, Col } from "antd";
 import { Layout } from "antd";
 import "antd/dist/antd.css";
 import "./details.css";
-import { WiDayFog, WiDaySunny } from "react-icons/wi";
-import { WiDaySleetStorm } from "react-icons/wi";
-import { WiDayRain } from "react-icons/wi";
-import { WiDaySunnyOvercast } from "react-icons/wi";
-import { WiDayThunderstorm } from "react-icons/wi";
-import { Link } from "react-router-dom";
 import Geocode from "react-geocode";
 const axios = require("axios").default;
 
@@ -25,6 +19,9 @@ const { Meta } = Card;
 function Days() {
   const [headerTitle, setHeaderTitle] = useState("");
   const [cityState, setCityState] = useState("");
+  const [placeholder, setPlaceholder] = useState(
+    "Search for your city here...(city, state)"
+  );
   const [dayData, setDayData] = useState([]);
   const [isSearching, setIsSearching] = useState(true);
   const [isLandingPage, setIsLandingPage] = useState(true);
@@ -74,7 +71,7 @@ function Days() {
             <input
               type="text"
               className="city-search-input"
-              placeholder="Search for your city here...(city, state)"
+              placeholder={placeholder}
               value={cityState}
               onChange={(e) => setCityState(e.target.value)}
             />
@@ -131,15 +128,28 @@ function Days() {
     );
   };
 
-  const renderHourlyData = (data) => {
-    // console.log(hourlyData);
+  const clearInputField = () => {
+    setPlaceholder("");
+  };
 
+  const renderHourlyData = (data) => {
     return (
       <div className="row-container">
         <Layout>
           <Sider>
             <Row className="home-btn">
-              <button>Home</button>
+              <button
+                onClick={() => {
+                  setCityState("");
+                  setPlaceholder(placeholder);
+                  setIsHourly(false);
+                  setIsLandingPage(true);
+                  setIsSearching(true);
+                  setHeaderTitle(false);
+                }}
+              >
+                Home
+              </button>
             </Row>
           </Sider>
           <Layout>
