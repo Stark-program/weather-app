@@ -42,7 +42,6 @@ function Days() {
         // const { lat, lng } = response.results[0].geometry.location;
         const lat = response.results[0].geometry.location.lat;
         const long = response.results[0].geometry.location.lng;
-        console.log(lat, long);
 
         const weather = axios
           .get(
@@ -87,59 +86,54 @@ function Days() {
   };
 
   const handleHourlyData = async function () {
-    console.log(1);
     setIsSearching(false);
     setDayData([]);
     setHeaderTitle(false);
     setIsHourly(true);
-    console.log(2);
+
     await Geocode.fromAddress(cityState).then(
       (response) => {
-        console.log(3);
         const lat = response.results[0].geometry.location.lat;
         const long = response.results[0].geometry.location.lng;
-        console.log(lat, long);
-        console.log(4);
+
         axios
           .get(
             `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
           )
           .then((answer) => {
             let objectArray = Object.entries(answer);
-            console.log(objectArray);
+
             let data = [];
             objectArray.forEach(([key, value]) => {
               data.push(value);
             });
-            console.log(data[0].list);
+
             setHourlyData(data[0].list);
             setHeaderTitle(headerTitle);
-            console.log(hourlyData);
           });
       },
       (error) => {
         console.log(error);
       }
     );
-    console.log(6);
   };
 
   const renderRows = (data) => {
     return (
       <div>
         <Row className="details-row" key={data.dt}>
-          <Col span={2}>{format(fromUnixTime(data.dt), "M/d EEEEEE HHmm")}</Col>
-          <Col span={8}>{data.main.temp}</Col>
-          <Col span={8}>{data.weather[0].main}</Col>
+          <Col span={2}>{format(fromUnixTime(data.dt), "M/d EEEE")}</Col>
+          <Col span={3}>{format(fromUnixTime(data.dt), "HHmm")}</Col>
+          <Col span={3}>{data.main.temp}</Col>
+          <Col span={3}>{data.weather[0].main}</Col>
         </Row>
       </div>
     );
   };
 
   const renderHourlyData = (data) => {
-    console.log(7);
     // console.log(hourlyData);
-    console.log(8);
+
     return (
       <div className="row-container">
         <Layout>
@@ -147,28 +141,6 @@ function Days() {
             <Row className="home-btn">
               <button>Home</button>
             </Row>
-            <hr></hr>
-            {/* <Row className="day-btn">
-              <button>Monday</button>
-            </Row>
-            <Row className="day-btn">
-              <button>Tuesday</button>
-            </Row>
-            <Row className="day-btn">
-              <button>Wednesday</button>
-            </Row>
-            <Row className="day-btn">
-              <button>Thursday</button>
-            </Row>
-            <Row className="day-btn">
-              <button>Friday</button>
-            </Row>
-            <Row className="day-btn">
-              <button>Saturday</button>
-            </Row>
-            <Row className="day-btn">
-              <button>Sunday</button>
-            </Row> */}
           </Sider>
           <Layout>
             <Row>
@@ -176,7 +148,16 @@ function Days() {
             </Row>
             <Content>
               <Row>
-                <Col span={21}>{hourlyData.map(renderRows)}</Col>
+                <Col span={2}>Date</Col>
+                <Col span={3}>Time</Col>
+                <Col span={3}>Temperature</Col>
+                <Col span={3}>Conditions</Col>
+              </Row>
+              <hr className="hourly-content-line"></hr>
+              <Row>
+                <Col span={24} className="hourly-content">
+                  {hourlyData.map(renderRows)}
+                </Col>
               </Row>
             </Content>
           </Layout>
@@ -186,7 +167,6 @@ function Days() {
   };
 
   const renderCard = (data) => {
-    console.log(data);
     return (
       <Col span={6} key={data.dt}>
         {/* <Link to="/Pages/expanded_details" onClick={hourlyData}> */}
@@ -235,6 +215,7 @@ function Days() {
             </Col>
           </Row>
         </Card>
+        <Row className="below-card">Click card for a 5 day 3 hour forecast</Row>
         {/* </Link> */}
       </Col>
     );

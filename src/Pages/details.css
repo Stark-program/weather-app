@@ -13,6 +13,14 @@
 }
 .ant-layout-header {
   background: blanchedalmond;
+  width: 100%;
+}
+.hourly-content {
+  text-align: center;
+}
+.hourly-content-line {
+  width: 100%;
+  text-align: left;
 }
 .home-btn {
   height: 57px;
@@ -28,4 +36,8 @@
 .details-row {
   padding-top: 0.38%;
   padding-bottom: 0.38%;
+  text-align: center;
+}
+.ant-row {
+  justify-content: center;
 }
