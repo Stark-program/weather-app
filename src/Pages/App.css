@@ -19,6 +19,8 @@
 }
 .below-card {
   margin-top: 1rem;
+  overflow: hidden;
+  width: 439px !important;
 }
 .city-header {
   font-size: 60px;
@@ -46,12 +48,13 @@
 }
 .ant-avatar {
   overflow: visible;
+  margin-left: 10px !important;
 }
 .weather-card {
   width: 90%;
   cursor: pointer;
   border: 1px solid rgba(10, 3, 3, 0.749);
-  border-radius: 25px;
+  border-radius: 25px !important;
   overflow: hidden;
   box-shadow: 10px 5px 5px #87cefa;
   margin-top: 10%;
@@ -59,9 +62,10 @@
 }
 .ant-card {
   display: block;
+  margin-top: 10% !important;
 }
 .ant-card-body {
-  padding: 0;
+  padding: 0 !important;
 }
 .line-seperation {
   margin: 0;
@@ -76,7 +80,7 @@
   font-size: 30px;
   float: left;
   color: rgba(10, 3, 3, 0.749);
-  margin-left: 18%;
+
   background-color: #87cefa;
 }
 .bottom-of-card {
@@ -139,12 +143,4 @@
 }
 .landingPage {
   margin-top: 15%;
-}
-
-.react-date-picker--disabled {
-  background: none;
-  background-color: none;
-}
-.react-date-picker__wrapper {
-  border: none;
 }
