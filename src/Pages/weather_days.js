@@ -45,6 +45,26 @@ function Days() {
             `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=imperial&exclude=hourly,minutely{part}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
           )
           .then((answer) => {
+            Geocode.fromLatLng(lat, long).then(
+              (response) => {
+                const addressData = response.results[0].address_components;
+
+                for (let i = 0; i < addressData.length; i++) {
+                  if (addressData[i].types[0] == "locality") {
+                    console.log(addressData[i].long_name);
+                  }
+                }
+
+                const location = response.results[0].formatted_address;
+                console.log(addressData);
+                setHeaderTitle(location);
+              },
+              (error) => {
+                alert("Input Not Valid");
+                console.log(error);
+              }
+            );
+
             setDayData(answer.data.daily);
           });
       },
@@ -52,8 +72,6 @@ function Days() {
         console.error(error);
       }
     );
-
-    setHeaderTitle(cityState);
   };
   const renderLandingPage = () => {
     return (
@@ -106,7 +124,7 @@ function Days() {
             });
 
             setHourlyData(data[0].list);
-            setHeaderTitle(headerTitle);
+            // setHeaderTitle(headerTitle);
           });
       },
       (error) => {
