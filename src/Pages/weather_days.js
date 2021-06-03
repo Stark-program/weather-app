@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import fromUnixTime from "date-fns/fromUnixTime";
 import format from "date-fns/format";
@@ -13,7 +13,7 @@ import Geocode from "react-geocode";
 const axios = require("axios").default;
 
 dotenv.config();
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 const { Meta } = Card;
 
 function Days() {
@@ -40,7 +40,7 @@ function Days() {
         const lat = response.results[0].geometry.location.lat;
         const long = response.results[0].geometry.location.lng;
 
-        const weather = axios
+        axios
           .get(
             `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=imperial&exclude=hourly,minutely{part}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
           )
@@ -49,15 +49,24 @@ function Days() {
               (response) => {
                 const addressData = response.results[0].address_components;
 
-                for (let i = 0; i < addressData.length; i++) {
-                  if (addressData[i].types[0] == "locality") {
-                    console.log(addressData[i].long_name);
+                const city = addressData.filter((value) => {
+                  if (
+                    value.types[0] === "locality" ||
+                    value.types[0] === "administrative_area_level_2"
+                  ) {
+                    return value;
                   }
-                }
+                });
+                const state = addressData.filter((value) => {
+                  if (value.types[0] === "administrative_area_level_1") {
+                    return value;
+                  }
+                });
 
-                const location = response.results[0].formatted_address;
+                const loc = city[0].short_name + ", " + state[0].short_name;
+                setHeaderTitle(loc);
+                console.log(loc);
                 console.log(addressData);
-                setHeaderTitle(location);
               },
               (error) => {
                 alert("Input Not Valid");
@@ -146,10 +155,6 @@ function Days() {
     );
   };
 
-  const clearInputField = () => {
-    setPlaceholder("");
-  };
-
   const renderHourlyData = (data) => {
     return (
       <div className="row-container">
@@ -212,6 +217,7 @@ function Days() {
                   <img
                     src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
                     className="day_to_day_image"
+                    alt=""
                   />
                 }
               </div>
@@ -228,6 +234,7 @@ function Days() {
                       <img
                         src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
                         className="small-weather-icon"
+                        alt=""
                       />
                     }
                   />
